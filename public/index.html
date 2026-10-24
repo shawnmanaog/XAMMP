@@ -1,0 +1,1957 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>Passport Tracking System</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Public+Sans:wght@400;500;600;700;800&family=Source+Serif+4:wght@600;700&display=swap"
+    rel="stylesheet">
+  <style>
+    :root {
+      --navy: #10294f;
+      --navy2: #0a1b36;
+      --red: #b3282d;
+      --gold: #b58a2c;
+      --bg: #eef1f5;
+      --card: #fff;
+      --ink: #1b2735;
+      --muted: #5e6b7a;
+      --line: #d9dee6;
+      --soft: #f6f8fb;
+      --ok: #16794c;
+      --okbg: #e3f3ea;
+      --warn: #8a5a00;
+      --warnbg: #fdf0d2;
+      --bad: #a82424;
+      --badbg: #fbe3e3;
+      --info: #1f5fa8;
+      --infobg: #e3eefa
+    }
+
+    @media(prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) {
+        --bg: #0c131d;
+        --card: #141d2a;
+        --ink: #e6ebf2;
+        --muted: #93a1b3;
+        --line: #263344;
+        --soft: #101926;
+        --ok: #4cc38a;
+        --okbg: #12362a;
+        --warn: #f0b64a;
+        --warnbg: #3a2d10;
+        --bad: #f07a7a;
+        --badbg: #3b1717;
+        --info: #7db4f0;
+        --infobg: #142a44
+      }
+    }
+
+    :root[data-theme="dark"] {
+      --bg: #0c131d;
+      --card: #141d2a;
+      --ink: #e6ebf2;
+      --muted: #93a1b3;
+      --line: #263344;
+      --soft: #101926;
+      --ok: #4cc38a;
+      --okbg: #12362a;
+      --warn: #f0b64a;
+      --warnbg: #3a2d10;
+      --bad: #f07a7a;
+      --badbg: #3b1717;
+      --info: #7db4f0;
+      --infobg: #142a44
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0
+    }
+
+    html {
+      scroll-padding-top: 90px
+    }
+
+    body {
+      font-family: 'Public Sans', Arial, sans-serif;
+      background: var(--bg);
+      color: var(--ink);
+      font-size: 16px;
+      line-height: 1.55;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column
+    }
+
+    h1,
+    h2,
+    h3 {
+      font-family: 'Source Serif 4', Georgia, serif;
+      font-weight: 700;
+      line-height: 1.25
+    }
+
+    button,
+    input,
+    select,
+    textarea {
+      font: inherit
+    }
+
+    button {
+      cursor: pointer
+    }
+
+    a {
+      color: var(--info);
+      text-decoration: none
+    }
+
+    .hidden {
+      display: none !important
+    }
+
+    .strip {
+      background: #e8ecf2;
+      color: #33415a;
+      font-size: 16px;
+      padding: 5px 16px;
+      display: flex;
+      gap: 8px;
+      align-items: center;
+      justify-content: center;
+      flex-wrap: wrap
+    }
+
+    :root[data-theme="dark"] .strip {
+      background: #1b2636;
+      color: #a9b6c8
+    }
+
+    .site-head {
+      background: var(--navy);
+      color: #fff;
+      border-bottom: 4px solid var(--red);
+      padding-top: env(safe-area-inset-top, 0px);
+      position: sticky;
+      top: 0;
+      z-index: 30
+    }
+
+    .head-in {
+      max-width: 1180px;
+      margin: auto;
+      padding: 12px 20px;
+      display: flex;
+      align-items: center;
+      gap: 22px;
+      flex-wrap: wrap
+    }
+
+    .brand {
+      display: flex;
+      gap: 12px;
+      align-items: center;
+      cursor: default
+    }
+
+    .seal {
+      width: 46px;
+      height: 46px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 35% 30%, #d9b45a, #8d6a1c);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      border: 2px solid #f1dca0;
+      flex: none
+    }
+
+    .brand b {
+      display: block;
+      font-family: 'Source Serif 4', serif;
+      font-size: 17px;
+      line-height: 1.1
+    }
+
+    .brand span {
+      display: block;
+      font-size: 10.5px;
+      letter-spacing: .9px;
+      text-transform: uppercase;
+      color: #b9c7dd;
+      margin-top: 3px
+    }
+
+    .main-nav {
+      display: flex;
+      gap: 2px;
+      flex: 1;
+      overflow-x: auto;
+      scrollbar-width: none
+    }
+
+    .main-nav a {
+      color: #cfd9ea;
+      padding: 10px 13px;
+      font-size: 13px;
+      font-weight: 600;
+      white-space: nowrap;
+      border-bottom: 3px solid transparent;
+      cursor: pointer
+    }
+
+    .main-nav a:hover {
+      color: #fff;
+      background: #ffffff12
+    }
+
+    .main-nav a.active {
+      color: #fff;
+      border-bottom-color: #e8c26a
+    }
+
+    .user-chip {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      font-size: 12px;
+      cursor: pointer
+    }
+
+    .user-chip b {
+      display: block;
+      font-size: 13px
+    }
+
+    .user-chip small {
+      color: #b9c7dd
+    }
+
+    .avatar {
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      background: #e8c26a;
+      color: var(--navy2);
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 12px
+    }
+
+    .btn-out {
+      background: transparent;
+      border: 1px solid #ffffff55;
+      color: #fff;
+      padding: 7px 12px;
+      border-radius: 4px;
+      font-size: 12px;
+      font-weight: 600
+    }
+
+    .btn-out:hover {
+      background: #ffffff1c
+    }
+
+    .advisory {
+      background: var(--infobg);
+      color: var(--info);
+      border-bottom: 1px solid var(--line);
+      font-size: 12.5px;
+      padding: 9px 20px;
+      text-align: center
+    }
+
+    .container {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 26px 20px 40px;
+      width: 100%;
+      flex: 1
+    }
+
+    .page {
+      animation: fade .35s
+    }
+
+    @keyframes fade {
+      from {
+        opacity: 0;
+        transform: translateY(6px)
+      }
+
+      to {
+        opacity: 1;
+        transform: none
+      }
+    }
+
+    .crumb {
+      font-size: 12px;
+      color: var(--muted);
+      margin-bottom: 6px
+    }
+
+    .page-title {
+      font-size: 27px;
+      color: var(--navy);
+      margin-bottom: 4px
+    }
+
+    :root[data-theme="dark"] .page-title {
+      color: #fff
+    }
+
+    @media(prefers-color-scheme:dark) {
+      :root:not([data-theme="light"]) .page-title {
+        color: #fff
+      }
+    }
+
+    .page-sub {
+      color: var(--muted);
+      margin-bottom: 22px;
+      max-width: 760px
+    }
+
+    .card {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 22px;
+      margin-bottom: 18px
+    }
+
+    .card>h3 {
+      font-size: 17px;
+      margin-bottom: 4px
+    }
+
+    .card>.sub {
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-bottom: 16px
+    }
+
+    .card.accent {
+      border-top: 4px solid var(--navy)
+    }
+
+    .grid {
+      display: grid;
+      gap: 18px
+    }
+
+    .g2 {
+      grid-template-columns: 1.5fr 1fr
+    }
+
+    .g3 {
+      grid-template-columns: repeat(3, 1fr)
+    }
+
+    .g4 {
+      grid-template-columns: repeat(4, 1fr)
+    }
+
+    .stat {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-left: 4px solid var(--navy);
+      border-radius: 6px;
+      padding: 16px 18px
+    }
+
+    .stat small {
+      display: block;
+      color: var(--muted);
+      font-size: 11.5px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      font-weight: 600
+    }
+
+    .stat b {
+      display: block;
+      font-size: 30px;
+      font-family: 'Source Serif 4', serif;
+      margin-top: 2px
+    }
+
+    .stat.w {
+      border-left-color: var(--gold)
+    }
+
+    .stat.o {
+      border-left-color: var(--ok)
+    }
+
+    .stat.r {
+      border-left-color: var(--red)
+    }
+
+    .hero {
+      background: linear-gradient(135deg, var(--navy2), var(--navy));
+      color: #fff;
+      border-radius: 6px;
+      padding: 30px;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 18px
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      right: -120px;
+      top: -120px;
+      width: 420px;
+      height: 420px;
+      border-radius: 50%;
+      background: repeating-radial-gradient(circle, transparent 0 12px, rgba(232, 194, 106, .16) 12px 13px)
+    }
+
+    .hero>* {
+      position: relative
+    }
+
+    .hero h2 {
+      font-size: 26px;
+      margin-bottom: 6px
+    }
+
+    .hero p {
+      color: #c4d0e4;
+      max-width: 620px;
+      margin-bottom: 16px
+    }
+
+    .track-form {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap
+    }
+
+    .track-form input {
+      flex: 1;
+      min-width: 170px
+    }
+
+    label {
+      display: block;
+      font-size: 12.5px;
+      font-weight: 700;
+      margin-bottom: 5px
+    }
+
+    label i {
+      color: var(--red);
+      font-style: normal
+    }
+
+    input,
+    select,
+    textarea {
+      width: 100%;
+      border: 1px solid #b9c2cf;
+      border-radius: 4px;
+      padding: 10px 12px;
+      background: var(--card);
+      color: var(--ink);
+      outline: none
+    }
+
+    input:focus,
+    select:focus,
+    textarea:focus {
+      border-color: var(--info);
+      box-shadow: 0 0 0 3px rgba(31, 95, 168, .2)
+    }
+
+    textarea {
+      resize: vertical
+    }
+
+    input[type=checkbox] {
+      width: auto
+    }
+
+    .hint {
+      font-size: 11.5px;
+      color: var(--muted);
+      margin-top: 4px
+    }
+
+    .btn {
+      border: 0;
+      background: var(--navy);
+      color: #fff;
+      padding: 10px 18px;
+      border-radius: 4px;
+      font-weight: 700;
+      font-size: 13.5px
+    }
+
+    .btn:hover {
+      background: var(--navy2)
+    }
+
+    .btn.red {
+      background: var(--red)
+    }
+
+    .btn.red:hover {
+      background: #8f1f23
+    }
+
+    .btn.gold {
+      background: #e8c26a;
+      color: var(--navy2)
+    }
+
+    .btn.gold:hover {
+      background: #f1d287
+    }
+
+    .btn.ghost {
+      background: transparent;
+      color: var(--navy);
+      border: 1px solid var(--navy)
+    }
+
+    .btn.ghost:hover {
+      background: var(--navy);
+      color: #fff
+    }
+
+    :root[data-theme="dark"] .btn.ghost {
+      color: #cfd9ea;
+      border-color: #5b6f8c
+    }
+
+    .btn.sm {
+      padding: 6px 11px;
+      font-size: 12px
+    }
+
+    .btn.ok {
+      background: var(--ok)
+    }
+
+    .btn.bad {
+      background: var(--bad)
+    }
+
+    .btn.full {
+      width: 100%
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px
+    }
+
+    .full-f {
+      grid-column: 1/-1
+    }
+
+    fieldset {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 18px;
+      margin-bottom: 16px
+    }
+
+    legend {
+      font-weight: 700;
+      padding: 0 8px;
+      font-size: 13px;
+      color: var(--navy)
+    }
+
+    :root[data-theme="dark"] legend {
+      color: #cfd9ea
+    }
+
+    .check {
+      display: flex;
+      gap: 9px;
+      align-items: flex-start;
+      font-weight: 500;
+      font-size: 13px;
+      margin-bottom: 8px
+    }
+
+    .check input {
+      margin-top: 3px
+    }
+
+    .badge {
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 3px;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: .3px;
+      text-transform: uppercase
+    }
+
+    .b-warn {
+      background: var(--warnbg);
+      color: var(--warn)
+    }
+
+    .b-ok {
+      background: var(--okbg);
+      color: var(--ok)
+    }
+
+    .b-bad {
+      background: var(--badbg);
+      color: var(--bad)
+    }
+
+    .b-info {
+      background: var(--infobg);
+      color: var(--info)
+    }
+
+    .alert {
+      padding: 12px 14px;
+      border-radius: 4px;
+      font-size: 13px;
+      border-left: 4px solid;
+      margin: 14px 0
+    }
+
+    .alert.warn {
+      background: var(--warnbg);
+      color: var(--warn);
+      border-color: var(--warn)
+    }
+
+    .alert.bad {
+      background: var(--badbg);
+      color: var(--bad);
+      border-color: var(--bad)
+    }
+
+    .alert.info {
+      background: var(--infobg);
+      color: var(--info);
+      border-color: var(--info)
+    }
+
+    .alert.ok {
+      background: var(--okbg);
+      color: var(--ok);
+      border-color: var(--ok)
+    }
+
+    .scroll {
+      overflow-x: auto
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 620px
+    }
+
+    th {
+      text-align: left;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--muted);
+      background: var(--soft);
+      padding: 10px 12px;
+      border-bottom: 2px solid var(--line)
+    }
+
+    td {
+      padding: 12px;
+      border-bottom: 1px solid var(--line);
+      font-size: 13px;
+      vertical-align: top
+    }
+
+    tbody tr:hover {
+      background: var(--soft)
+    }
+
+    .ref {
+      font-family: ui-monospace, Menlo, Consolas, monospace;
+      font-weight: 700;
+      font-size: 12.5px;
+      letter-spacing: .3px
+    }
+
+    .kv {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px 20px;
+      background: var(--soft);
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 16px
+    }
+
+    .kv small {
+      display: block;
+      font-size: 10.5px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+      color: var(--muted);
+      font-weight: 600
+    }
+
+    .kv b {
+      font-size: 13.5px;
+      display: block;
+      margin-top: 2px
+    }
+
+    .stepper {
+      display: flex;
+      list-style: none;
+      counter-reset: s;
+      min-width: 640px;
+      margin: 22px 0 8px
+    }
+
+    .stepper li {
+      flex: 1;
+      text-align: center;
+      position: relative;
+      font-size: 11.5px;
+      color: var(--muted);
+      padding: 0 4px
+    }
+
+    .stepper li::before {
+      content: counter(s);
+      counter-increment: s;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: var(--soft);
+      border: 2px solid var(--line);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 8px;
+      font-weight: 800;
+      position: relative;
+      z-index: 1;
+      color: var(--muted)
+    }
+
+    .stepper li::after {
+      content: '';
+      position: absolute;
+      top: 16px;
+      left: calc(50% + 16px);
+      right: calc(-50% + 16px);
+      height: 2px;
+      background: var(--line)
+    }
+
+    .stepper li:last-child::after {
+      display: none
+    }
+
+    .stepper li.done::before {
+      content: '✓';
+      background: var(--navy);
+      border-color: var(--navy);
+      color: #fff
+    }
+
+    .stepper li.done::after {
+      background: var(--navy)
+    }
+
+    .stepper li.cur::before {
+      border-color: var(--red);
+      color: var(--red);
+      background: var(--card);
+      box-shadow: 0 0 0 4px rgba(179, 40, 45, .18);
+      animation: pulse 2s infinite
+    }
+
+    .stepper li.rej::before {
+      content: '✕';
+      background: var(--bad);
+      border-color: var(--bad);
+      color: #fff
+    }
+
+    .stepper li.done,
+    .stepper li.cur,
+    .stepper li.rej {
+      color: var(--ink);
+      font-weight: 700
+    }
+
+    @keyframes pulse {
+      50% {
+        box-shadow: 0 0 0 8px rgba(179, 40, 45, 0)
+      }
+    }
+
+    .log {
+      list-style: none;
+      border-left: 2px solid var(--line);
+      margin-left: 6px
+    }
+
+    .log li {
+      padding: 0 0 14px 18px;
+      position: relative;
+      font-size: 13px
+    }
+
+    .log li::before {
+      content: '';
+      position: absolute;
+      left: -6px;
+      top: 5px;
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--navy);
+      border: 2px solid var(--card)
+    }
+
+    .log small {
+      display: block;
+      color: var(--muted);
+      font-size: 11.5px
+    }
+
+    .docs {
+      list-style: none
+    }
+
+    .docs li {
+      display: flex;
+      justify-content: space-between;
+      gap: 10px;
+      padding: 9px 0;
+      border-bottom: 1px dashed var(--line);
+      font-size: 13px
+    }
+
+    .pill {
+      display: flex;
+      gap: 10px;
+      align-items: center;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--card);
+      text-align: left;
+      color: var(--ink);
+      width: 100%;
+      font-weight: 600;
+      font-size: 13px
+    }
+
+    .pill:hover {
+      border-color: var(--navy);
+      background: var(--soft)
+    }
+
+    .pill span {
+      font-size: 20px
+    }
+
+    .pill small {
+      display: block;
+      font-weight: 400;
+      color: var(--muted);
+      font-size: 11.5px
+    }
+
+    .stack {
+      display: grid;
+      gap: 10px
+    }
+
+    details {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: var(--card);
+      margin-bottom: 8px
+    }
+
+    summary {
+      padding: 13px 16px;
+      font-weight: 600;
+      cursor: pointer;
+      font-size: 13.5px
+    }
+
+    details[open] summary {
+      border-bottom: 1px solid var(--line)
+    }
+
+    details p {
+      padding: 12px 16px;
+      color: var(--muted);
+      font-size: 13px
+    }
+
+    .msg {
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      padding: 14px;
+      margin-top: 12px;
+      background: var(--soft)
+    }
+
+    .msg small {
+      color: var(--muted);
+      display: block;
+      margin: 2px 0 6px;
+      font-size: 11.5px
+    }
+
+    .reply {
+      margin-top: 8px;
+      padding: 10px 12px;
+      background: var(--okbg);
+      color: var(--ok);
+      border-radius: 4px;
+      font-size: 12.5px
+    }
+
+    .row {
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center
+    }
+
+    .mt {
+      margin-top: 14px
+    }
+
+    .login-wrap {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 30px 20px;
+      display: grid;
+      grid-template-columns: 1.35fr 1fr;
+      gap: 24px;
+      flex: 1;
+      width: 100%
+    }
+
+    .how {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 12px;
+      margin-top: 6px
+    }
+
+    .how div {
+      background: var(--card);
+      border: 1px solid var(--line);
+      border-top: 3px solid var(--gold);
+      border-radius: 6px;
+      padding: 14px;
+      font-size: 12.5px;
+      color: var(--muted)
+    }
+
+    .how b {
+      display: block;
+      color: var(--ink);
+      font-size: 13px;
+      margin-bottom: 4px
+    }
+
+    footer {
+      background: var(--navy2);
+      color: #aebbd0;
+      font-size: 12px;
+      padding: 26px 20px;
+      margin-top: auto
+    }
+
+    .foot-in {
+      max-width: 1180px;
+      margin: auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr;
+      gap: 24px
+    }
+
+    footer b {
+      color: #fff;
+      display: block;
+      margin-bottom: 6px;
+      font-size: 13px
+    }
+
+    footer a {
+      color: #e8c26a;
+      display: block;
+      margin: 3px 0;
+      cursor: pointer
+    }
+
+    .legal {
+      max-width: 1180px;
+      margin: 18px auto 0;
+      padding-top: 14px;
+      border-top: 1px solid #ffffff22;
+      font-size: 11px
+    }
+
+    .modal {
+      position: fixed;
+      inset: 0;
+      background: #0a1b36b8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 18px;
+      z-index: 60;
+      overflow: auto
+    }
+
+    .modal-card {
+      background: var(--card);
+      border-radius: 6px;
+      padding: 26px;
+      width: 480px;
+      max-width: 100%;
+      border-top: 5px solid var(--red);
+      position: relative;
+      animation: fade .25s
+    }
+
+    .modal-card h2 {
+      font-size: 20px;
+      margin-bottom: 6px
+    }
+
+    .modal-card p.sub {
+      color: var(--muted);
+      font-size: 12.5px;
+      margin-bottom: 14px
+    }
+
+    .close {
+      position: absolute;
+      right: 14px;
+      top: 8px;
+      background: none;
+      border: 0;
+      font-size: 26px;
+      color: var(--muted)
+    }
+
+    .big-ref {
+      font-family: ui-monospace, Menlo, monospace;
+      font-size: 22px;
+      font-weight: 800;
+      background: var(--soft);
+      border: 2px dashed var(--navy);
+      padding: 12px;
+      text-align: center;
+      border-radius: 6px;
+      margin: 10px 0;
+      letter-spacing: 1px
+    }
+
+    .toast {
+      position: fixed;
+      right: 20px;
+      bottom: calc(20px + env(safe-area-inset-bottom, 0px));
+      background: var(--navy2);
+      color: #fff;
+      border-left: 4px solid #e8c26a;
+      padding: 13px 16px;
+      border-radius: 4px;
+      font-size: 13px;
+      z-index: 80;
+      max-width: 340px;
+      animation: fade .3s;
+      box-shadow: 0 10px 30px #0006
+    }
+
+    @media(max-width:980px) {
+
+      .g2,
+      .g3,
+      .login-wrap,
+      .foot-in {
+        grid-template-columns: 1fr
+      }
+
+      .g4 {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .how {
+        grid-template-columns: 1fr 1fr
+      }
+
+      .kv {
+        grid-template-columns: 1fr 1fr
+      }
+    }
+
+    @media(max-width:620px) {
+
+      .g4,
+      .form-grid,
+      .how,
+      .kv {
+        grid-template-columns: 1fr
+      }
+
+      .user-chip div {
+        display: none
+      }
+
+      .hero {
+        padding: 22px
+      }
+
+      .page-title {
+        font-size: 23px
+      }
+    }
+
+    @media(prefers-reduced-motion:reduce) {
+      * {
+        animation: none !important
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+
+  <div id="loginScreen" style="display:flex;flex-direction:column;min-height:100vh">
+    <div class="strip">🏛 <span>An official demonstration website of the <b>Passport Tracking System</b> · fictional
+        data for training use</span></div>
+    <div class="site-head">
+      <div class="head-in">
+        <div class="brand">
+          <div class="seal">🛂</div>
+          <div><b>Passport Tracking System</b><span>Civil Registry &amp; Travel Documents</span></div>
+        </div>
+        <div style="flex:1"></div><span style="font-size:12px;color:#b9c7dd">Helpline 1-800-555-0142 · Mon–Fri
+          8:00–17:00</span>
+      </div>
+    </div>
+    <div class="login-wrap">
+      <div>
+        <div class="hero">
+          <h2>Track your passport application</h2>
+          <p>Enter the reference number from your receipt and your last name. No sign-in needed.</p>
+          <form class="track-form" onsubmit="publicTrack(event)">
+            <input id="pubRef" placeholder="Reference no. e.g. PPT-2026-000125" required>
+            <input id="pubName" placeholder="Last name" required style="max-width:200px">
+            <button class="btn gold" type="submit">Track</button>
+          </form>
+          <p class="hint" style="color:#aebbd0;margin:8px 0 0">Demo: <b>PPT-2026-000125</b> / <b>Morgan</b></p>
+        </div>
+        <div id="pubResult"></div>
+        <div class="card">
+          <h3>How it works</h3>
+          <p class="sub">From online form to passport in hand.</p>
+          <div class="how">
+            <div><b>1 · Apply online</b>Complete the form and receive your Reference No.</div>
+            <div><b>2 · Pay &amp; book</b>Pay the fee and pick an appointment date.</div>
+            <div><b>3 · Biometrics</b>Visit the office with original documents.</div>
+            <div><b>4 · Release</b>Collect at the office or get courier delivery.</div>
+          </div>
+        </div>
+      </div>
+      <div>
+        <div class="card accent">
+          <h3>Sign in to your account</h3>
+          <p class="sub">Manage applications, renewals and enquiries.</p>
+          <form id="loginForm">
+            <label>Application ID / Username</label><input id="loginUser" placeholder="e.g. MEMBER" required
+              style="margin-bottom:14px">
+            <label>Password</label><input id="loginPass" type="password" placeholder="Password" required>
+            <div class="row mt" style="justify-content:space-between"><label class="check" style="margin:0"><input
+                  type="checkbox"> Remember me</label>
+              <a href="#" onclick="openModal('forgotModal');return false">Forgot password?</a>
+            </div>
+            <button class="btn red full mt" type="submit">Sign in</button>
+            <p id="loginError"
+              style="color:var(--bad);font-size:12.5px;margin-top:10px;min-height:18px;text-align:center"></p>
+          </form>
+          <p class="hint" style="text-align:center">New applicant? <a href="#"
+              onclick="openModal('registerModal');return false">Create an account</a></p>
+          <div class="alert info">Demo accounts — <b>MEMBER</b> / <b>1234</b> · <b>ADMIN</b> / <b>admin123</b></div>
+        </div>
+        <div class="card">
+          <h3>Before you apply</h3>
+          <p class="sub">Documents &amp; fees at a glance.</p>
+          <ul class="docs">
+            <li><span>Regular processing</span><b>20 working days · $60</b></li>
+            <li><span>Express processing</span><b>7 working days · $95</b></li>
+            <li><span>Lost / damaged passport</span><b>+ $40 fee</b></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+  <div id="app" class="hidden" style="min-height:100vh;display:none;flex-direction:column">
+    <div class="strip">🏛 <span>An official demonstration website of the <b>Passport Tracking System</b> · fictional
+        data for training use</span></div>
+    <header class="site-head">
+      <div class="head-in">
+        <div class="brand">
+          <div class="seal">🛂</div>
+          <div><b>Passport Tracking System</b><span>Civil Registry &amp; Travel Documents</span></div>
+        </div>
+        <nav class="main-nav" id="nav"></nav>
+        <div class="user-chip" onclick="go(role==='admin'?'a-dash':'profile')">
+          <div class="avatar" id="avatar">AM</div>
+          <div><b id="uName">Alex Morgan</b><small id="uRole">Applicant</small></div>
+        </div>
+        <button class="btn-out" onclick="logout()">Sign out</button>
+      </div>
+    </header>
+    <div class="advisory">ℹ Service advisory: Express processing is available at all offices. Bring <b>original</b>
+      documents to your appointment.</div>
+    <main class="container">
+
+      <section id="home" class="page">
+        <div class="crumb">Home</div>
+        <h1 class="page-title" id="hello">Welcome</h1>
+        <p class="page-sub">Your passport services in one place — track progress, book services and find official
+          reference information.</p>
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="stat"><small>My applications</small><b id="sTotal">0</b></div>
+          <div class="stat w"><small>In process</small><b id="sProc">0</b></div>
+          <div class="stat o"><small>Ready for release</small><b id="sReady">0</b></div>
+          <div class="stat r"><small>Renewal requests</small><b id="sRen">0</b></div>
+        </div>
+        <div class="hero">
+          <h2>Track an application</h2>
+          <p>Enter any reference number linked to your account.</p>
+          <form class="track-form" onsubmit="memberTrack(event)"><input id="homeRef" placeholder="PPT-2026-000125"
+              required><button class="btn gold">Track</button></form>
+        </div>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Latest application</h3>
+            <p class="sub">Most recent activity on your account.</p>
+            <div id="latest"></div>
+          </div>
+          <div class="card">
+            <h3>Quick services</h3>
+            <p class="sub">Common tasks</p>
+            <div class="stack">
+              <button class="pill" onclick="go('apply')"><span>📝</span>
+                <div>New passport<small>Start an online application</small></div>
+              </button>
+              <button class="pill" onclick="go('renew')"><span>🔄</span>
+                <div>Renew a passport<small>Expiring within 12 months</small></div>
+              </button>
+              <button class="pill" onclick="go('ref')"><span>📚</span>
+                <div>Requirements &amp; fees<small>Official reference guide</small></div>
+              </button>
+              <button class="pill" onclick="go('help')"><span>💬</span>
+                <div>Help &amp; enquiries<small>FAQ and contact the office</small></div>
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="track" class="page hidden">
+        <div class="crumb">Home › Track application</div>
+        <h1 class="page-title">Track application</h1>
+        <p class="page-sub">Enter the Reference No. printed on your acknowledgement receipt (format <span
+            class="ref">PPT-YYYY-NNNNNN</span>).</p>
+        <div class="card">
+          <form class="track-form" onsubmit="memberTrack(event,true)"><input id="trackRef" placeholder="PPT-2026-000125"
+              required><button class="btn">Search</button></form>
+          <div id="trackOut" class="mt"></div>
+        </div>
+      </section>
+
+      <section id="detail" class="page hidden"></section>
+
+      <section id="apply" class="page hidden">
+        <div class="crumb">Home › New application</div>
+        <h1 class="page-title">New passport application</h1>
+        <p class="page-sub">Fields marked <i style="color:var(--red)">*</i> are required. Your Reference No. is issued
+          once you submit.</p>
+        <form onsubmit="submitApply(event)">
+          <fieldset>
+            <legend>1 · Personal details</legend>
+            <div class="form-grid">
+              <div><label>First name <i>*</i></label><input id="fFirst" required></div>
+              <div><label>Last name <i>*</i></label><input id="fLast" required></div>
+              <div><label>Date of birth <i>*</i></label><input id="fDob" type="date" required></div>
+              <div><label>Sex <i>*</i></label><select id="fSex" required>
+                  <option value="">Select</option>
+                  <option>Female</option>
+                  <option>Male</option>
+                  <option>Other</option>
+                </select></div>
+              <div><label>Place of birth <i>*</i></label><input id="fPob" required></div>
+              <div><label>Civil status</label><select id="fCivil">
+                  <option>Single</option>
+                  <option>Married</option>
+                  <option>Widowed</option>
+                  <option>Separated</option>
+                </select></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>2 · Contact</legend>
+            <div class="form-grid">
+              <div><label>Email <i>*</i></label><input id="fEmail" type="email" required></div>
+              <div><label>Mobile number <i>*</i></label><input id="fMobile" required></div>
+              <div class="full-f"><label>Home address <i>*</i></label><textarea id="fAddress" rows="2" required></textarea></div>
+            </div>
+          </fieldset>
+          <fieldset>
+            <legend>3 · Service &amp; appointment</legend>
+            <div class="form-grid">
+              <div><label>Application type <i>*</i></label><select id="fType">
+                  <option>New Passport</option>
+                  <option>Replacement (lost / damaged)</option>
+                </select></div>
+              <div><label>Processing speed <i>*</i></label><select id="fSpeed" onchange="feeHint()">
+                  <option value="Regular">Regular · 20 working days · $60</option>
+                  <option value="Express">Express · 7 working days · $95</option>
+                </select></div>
+              <div><label>Preferred office <i>*</i></label><select id="fSite">
+                  <option>DFA NCR Central Passport Office</option>
+                  <option>DFA Aseana</option>
+                  <option>Pasay City Office</option>
+                </select></div>
+              <div><label>Appointment date <i>*</i></label><input id="fAppt" type="date" required></div>
+            </div>
+            <p class="hint" id="feeHint">Estimated fee: $60</p>
+          </fieldset>
+          <fieldset>
+            <legend>4 · Documents you will bring</legend>
+            <label class="check"><input type="checkbox" required> Original PSA-issued birth certificate</label>
+            <label class="check"><input type="checkbox" required> Valid government-issued photo ID + photocopy</label>
+            <label class="check"><input type="checkbox"> Old passport (replacement / renewal only)</label>
+            <label class="check"><input type="checkbox" required> I declare that the information provided is true and
+              correct.</label>
+          </fieldset>
+          <button class="btn red" type="submit">Submit application</button>
+        </form>
+      </section>
+
+      <section id="renew" class="page hidden">
+        <div class="crumb">Home › Renewal</div>
+        <h1 class="page-title">Passport renewal</h1>
+        <p class="page-sub">Renew a passport that expires within 12 months, or has less than 6 months validity.</p>
+        <div class="card">
+          <form onsubmit="submitRenew(event)" class="form-grid">
+            <div><label>Current passport no. <i>*</i></label><input id="rNo" placeholder="P1234567" required></div>
+            <div><label>Expiry date <i>*</i></label><input id="rExp" type="date" required></div>
+            <div><label>Reason</label><select id="rWhy">
+                <option>Expiring soon</option>
+                <option>Pages full</option>
+                <option>Change of name</option>
+              </select></div>
+            <div><label>Processing speed</label><select id="rSpeed">
+                <option>Regular</option>
+                <option>Express</option>
+              </select></div>
+            <div class="full-f"><label>Notes</label><textarea id="rNotes" rows="2"></textarea></div>
+            <div class="full-f"><button class="btn red">Submit renewal request</button></div>
+          </form>
+          <div class="alert warn">Renewal requests are reviewed by the administrator before an appointment is issued.
+          </div>
+        </div>
+        <div class="card">
+          <h3>My renewal requests</h3>
+          <div class="scroll mt">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Passport no.</th>
+                  <th>Reason</th>
+                  <th>Speed</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="renList"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="mine" class="page hidden">
+        <div class="crumb">Home › My applications</div>
+        <h1 class="page-title">My applications</h1>
+        <p class="page-sub">All applications linked to your account.</p>
+        <div class="card">
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reference no.</th>
+                  <th>Type</th>
+                  <th>Service</th>
+                  <th>Submitted</th>
+                  <th>Status</th>
+                  <th></th>
+                </tr>
+              </thead>
+              <tbody id="mineList"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="ref" class="page hidden">
+        <div class="crumb">Home › Reference guide</div>
+        <h1 class="page-title">Requirements, fees &amp; status guide</h1>
+        <p class="page-sub">Official reference information. Fees are in US dollars and are non-refundable once
+          biometrics are captured.</p>
+        <div class="grid g2">
+          <div class="card">
+            <h3>Fees &amp; processing times</h3>
+            <p class="sub">Working days exclude weekends and public holidays.</p>
+            <div class="scroll">
+              <table style="min-width:0">
+                <thead>
+                  <tr>
+                    <th>Service</th>
+                    <th>Processing</th>
+                    <th>Fee</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>New passport — Regular</td>
+                    <td>20 working days</td>
+                    <td><b>$60</b></td>
+                  </tr>
+                  <tr>
+                    <td>New passport — Express</td>
+                    <td>7 working days</td>
+                    <td><b>$95</b></td>
+                  </tr>
+                  <tr>
+                    <td>Renewal — Regular</td>
+                    <td>15 working days</td>
+                    <td><b>$55</b></td>
+                  </tr>
+                  <tr>
+                    <td>Renewal — Express</td>
+                    <td>5 working days</td>
+                    <td><b>$90</b></td>
+                  </tr>
+                  <tr>
+                    <td>Lost / damaged surcharge</td>
+                    <td>+3 working days</td>
+                    <td><b>+$40</b></td>
+                  </tr>
+                  <tr>
+                    <td>Courier delivery (optional)</td>
+                    <td>2–4 days</td>
+                    <td><b>$12</b></td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </div>
+          <div class="card">
+            <h3>Reference number formats</h3>
+            <p class="sub">Keep these for every enquiry.</p>
+            <ul class="docs">
+              <li><span>Application</span><b class="ref">PPT-2026-000125</b></li>
+              <li><span>Renewal request</span><b class="ref">REN-2026-0007</b></li>
+              <li><span>Enquiry</span><b class="ref">CMP-001</b></li>
+              <li><span>Courier tracking</span><b class="ref">TRK-7F3K29</b></li>
+            </ul>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Required documents</h3>
+          <p class="sub">Bring originals plus one photocopy of each.</p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Application type</th>
+                  <th>Required documents</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><b>First-time adult</b></td>
+                  <td>PSA birth certificate · valid government ID · accomplished form · appointment confirmation</td>
+                </tr>
+                <tr>
+                  <td><b>Renewal</b></td>
+                  <td>Current passport · valid ID · marriage certificate (if name changed)</td>
+                </tr>
+                <tr>
+                  <td><b>Lost passport</b></td>
+                  <td>Affidavit of loss · police report · birth certificate · valid ID</td>
+                </tr>
+                <tr>
+                  <td><b>Minor (under 18)</b></td>
+                  <td>Birth certificate · parent/guardian ID and presence · consent letter if one parent absent</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <div class="card">
+          <h3>What each status means</h3>
+          <p class="sub">Typical time spent at each stage of a Regular application.</p>
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Stage</th>
+                  <th>Meaning</th>
+                  <th>Typical time</th>
+                </tr>
+              </thead>
+              <tbody id="stageGuide"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <section id="help" class="page hidden">
+        <div class="crumb">Home › Help</div>
+        <h1 class="page-title">Help &amp; enquiries</h1>
+        <p class="page-sub">Find quick answers or write to the passport office.</p>
+        <div class="grid g2">
+          <div>
+            <div class="card">
+              <h3>Frequently asked questions</h3>
+              <p class="sub" style="margin-bottom:12px">Select a question to expand.</p>
+              <details>
+                <summary>How long does a passport take?</summary>
+                <p>Regular takes about 20 working days from biometrics; Express about 7. Track live progress with your
+                  Reference No.</p>
+              </details>
+              <details>
+                <summary>Can I change my appointment?</summary>
+                <p>Yes, up to 24 hours before. Send an enquiry quoting your Reference No. with your preferred new date.
+                </p>
+              </details>
+              <details>
+                <summary>My application was rejected. What now?</summary>
+                <p>Open the application to see the reason. Correct the issue and submit a new application — your fee is
+                  credited if rejected before biometrics.</p>
+              </details>
+              <details>
+                <summary>How do I collect my passport?</summary>
+                <p>Collect in person with your claim stub and ID, or choose courier delivery ($12). You will be notified
+                  when it reaches “Ready for Release”.</p>
+              </details>
+            </div>
+            <div class="card">
+              <h3>Send an enquiry</h3>
+              <p class="sub">Replies typically within 2 working days.</p>
+              <form onsubmit="submitEnq(event)" class="form-grid">
+                <div><label>Subject <i>*</i></label><input id="eSub" required></div>
+                <div><label>Category</label><select id="eCat">
+                    <option>Application</option>
+                    <option>Renewal</option>
+                    <option>Payment</option>
+                    <option>Appointment</option>
+                    <option>Other</option>
+                  </select></div>
+                <div class="full-f"><label>Message <i>*</i></label><textarea id="eMsg" rows="4" required></textarea>
+                </div>
+                <div class="full-f"><button class="btn">Send enquiry</button></div>
+              </form>
+              <div id="enqList"></div>
+            </div>
+          </div>
+          <div>
+            <div class="card">
+              <h3>Contact the office</h3>
+              <ul class="docs">
+                <li><span>Helpline</span><b>1-800-555-0142</b></li>
+                <li><span>Email</span><b>help@pts.example</b></li>
+                <li><span>Hours</span><b>Mon–Fri 8:00–17:00</b></li>
+              </ul>
+            </div>
+            <div class="card">
+              <h3>Passport offices</h3>
+              <ul class="docs">
+                <li><span>DFA NCR Central Passport Office</span><b>Robinsons Galleria West Lane</b></li>
+                <li><span>DFA Aseana </span><b>Double Dragon Plaza</b></li>
+                <li><span>Pasay City</span><b>Near MOA, Newport mall</b></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="profile" class="page hidden">
+        <div class="crumb">Home › My profile</div>
+        <h1 class="page-title">My profile</h1>
+        <p class="page-sub">Account information on file.</p>
+        <div class="card">
+          <div class="kv">
+            <div><small>Full name</small><b id="pName"></b></div>
+            <div><small>Account ID</small><b id="pId"></b></div>
+            <div><small>Email</small><b>member@example.com</b></div>
+            <div><small>Account type</small><b id="pType"></b></div>
+            <div><small>Member since</small><b>Mar 2025</b></div>
+            <div><small>Identity verification</small><b><span class="badge b-ok">Verified</span></b></div>
+          </div>
+          <div class="row mt"><label class="check" style="margin:0"><input type="checkbox"
+                onchange="toggleTheme(this.checked)"> Use dark appearance</label></div>
+        </div>
+      </section>
+
+
+      <section id="a-dash" class="page hidden">
+        <div class="crumb">Administration › Overview</div>
+        <h1 class="page-title">Administration overview</h1>
+        <p class="page-sub">Live status of applications, renewals and enquiries.</p>
+        <div class="grid g4" style="margin-bottom:18px">
+          <div class="stat"><small>Registered members</small><b id="aMem">0</b></div>
+          <div class="stat w"><small>Applications in process</small><b id="aProc">0</b></div>
+          <div class="stat o"><small>Ready for release</small><b id="aReady">0</b></div>
+          <div class="stat r"><small>Open enquiries</small><b id="aEnq">0</b></div>
+        </div>
+        <div class="card">
+          <h3>Recent activity</h3>
+          <p class="sub">Latest events across all applications.</p>
+          <ul class="log" id="aLog"></ul>
+        </div>
+      </section>
+      <section id="a-apps" class="page hidden">
+        <div class="crumb">Administration › Applications</div>
+        <h1 class="page-title">Applications</h1>
+        <p class="page-sub">Advance an application to its next stage or reject it with a reason.</p>
+        <div class="card">
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Applicant</th>
+                  <th>Type</th>
+                  <th>Current stage</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="aAppList"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="a-ren" class="page hidden">
+        <div class="crumb">Administration › Renewals</div>
+        <h1 class="page-title">Renewal requests</h1>
+        <p class="page-sub">Approve or decline renewal requests.</p>
+        <div class="card">
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Reference</th>
+                  <th>Applicant</th>
+                  <th>Passport no.</th>
+                  <th>Reason</th>
+                  <th>Status</th>
+                  <th>Decision</th>
+                </tr>
+              </thead>
+              <tbody id="aRenList"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+      <section id="a-enq" class="page hidden">
+        <div class="crumb">Administration › Enquiries</div>
+        <h1 class="page-title">Enquiries &amp; complaints</h1>
+        <p class="page-sub">Reply to messages from applicants.</p>
+        <div class="card" id="aEnqList"></div>
+      </section>
+      <section id="a-mem" class="page hidden">
+        <div class="crumb">Administration › Members</div>
+        <h1 class="page-title">Registered members</h1>
+        <p class="page-sub">Applicant accounts.</p>
+        <div class="card">
+          <div class="scroll">
+            <table>
+              <thead>
+                <tr>
+                  <th>Member ID</th>
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="aMemList"></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+    </main>
+    <footer>
+      <div class="foot-in">
+        <div><b>Passport Tracking System</b>Department of Civil Registry &amp; Travel Documents<br>Robinsons Galleria West Lane ·
+          Helpline 1-800-555-0142</div>
+        <div><b>Services</b><a onclick="go('apply')">New passport</a><a onclick="go('renew')">Renewal</a><a
+            onclick="go('track')">Track</a></div>
+        <div><b>Information</b><a onclick="go('ref')">Fees &amp; requirements</a><a onclick="go('help')">Help &amp;
+            FAQ</a></div>
+      </div>
+      <div class="legal">Demonstration system for training and design purposes. All names, offices, fees and reference
+        numbers are fictional and not connected to any government agency.</div>
+    </footer>
+  </div>
+
+
+  <div id="registerModal" class="modal hidden">
+    <div class="modal-card"><button class="close" onclick="closeModal('registerModal')">&times;</button>
+      <h2>Create an account</h2>
+      <p class="sub">You will receive a Member ID after registration.</p>
+      <form onsubmit="register(event)"><label>Full name</label><input id="regName" required
+          style="margin-bottom:12px"><label>Email</label><input id="regEmail" type="email" required
+          style="margin-bottom:12px">
+        <label>Password</label><input id="regPass" type="password" required><button
+          class="btn red full mt">Register</button>
+      </form>
+    </div>
+  </div>
+  <div id="forgotModal" class="modal hidden">
+    <div class="modal-card"><button class="close" onclick="closeModal('forgotModal')">&times;</button>
+      <h2>Reset password</h2>
+      <p class="sub">Enter your Member ID and email.</p>
+      <form onsubmit="forgot(event)"><label>Member ID</label><input required
+          style="margin-bottom:12px"><label>Email</label><input type="email" required><button class="btn full mt">Send
+          reset link</button></form>
+    </div>
+  </div>
+  <div id="confirmModal" class="modal hidden">
+    <div class="modal-card"><button class="close" onclick="closeModal('confirmModal')">&times;</button>
+      <h2>Application received</h2>
+      <p class="sub">Keep this Reference No. — you need it to track your application.</p>
+      <div class="big-ref" id="cRef"></div>
+      <ul class="docs" id="cList"></ul>
+      <div class="alert info">Pay the fee at the cashier or online before your appointment. Bring all original
+        documents.</div>
+      <div class="row"><button class="btn" id="cOpen">View application</button><button class="btn ghost"
+          onclick="closeModal('confirmModal')">Close</button></div>
+    </div>
+  </div>
+
+  <script>
+    const $ = id => document.getElementById(id);
+    const esc = s => String(s).replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    const STAGES = [['Application Submitted', 'Your online form and payment details are recorded.', 'Same day'],
+    ['Documents Verified', 'Officers check your documents against civil registry records.', '2–3 working days'],
+    ['Biometrics & Interview', 'You visit the office for photo, fingerprints and a short interview.', 'On appointment date'],
+    ['Adjudication', 'Eligibility is reviewed and approved by an adjudication officer.', '3–5 working days'],
+    ['Printing & Quality Check', 'Your passport is printed, inspected and sealed.', '5–7 working days'],
+    ['Ready for Release', 'Collect at the office or receive by courier.', 'On completion']];
+    let members = [], apps = [], renewals = [], enquiries = [];
+
+    /* ===== DATABASE CONNECTION: lahat ng data ay galing na sa MySQL via api.php ===== */
+    async function api(action, data = {}) {
+      try {
+        const r = await fetch('api.php?action=' + action, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(data) });
+        return await r.json();
+      } catch (err) {
+        return { ok: false, error: 'Cannot reach the server. Open this page through http://localhost/passport/ and make sure Apache and MySQL are running.' };
+      }
+    }
+    async function loadData() {
+      const j = await api('data');
+      if (j.ok) { apps = j.apps; renewals = j.renewals; enquiries = j.enquiries; members = j.members }
+    }
+    let role = '', me = null, seq = 126, theme = '';
+    const today = () => new Date().toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' });
+    const addDays = (n) => { const d = new Date(); d.setDate(d.getDate() + n); return d.toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) };
+    const fmtDate = v => v ? new Date(v + 'T00:00').toLocaleDateString('en-US', { month: 'short', day: '2-digit', year: 'numeric' }) : '—';
+    const mine = () => apps.filter(a => a.owner === me.id);
+    function status(a) { return a.rejected ? { t: 'Rejected', c: 'b-bad' } : a.stage >= 5 ? { t: 'Ready for release', c: 'b-ok' } : { t: 'In process', c: 'b-warn' } }
+    const badge = a => { const s = status(a); return `<span class="badge ${s.c}">${s.t}</span>` };
+    function openModal(i) { $(i).classList.remove('hidden') } function closeModal(i) { $(i).classList.add('hidden') }
+    function toast(m) { const t = document.createElement('div'); t.className = 'toast'; t.textContent = m; document.body.appendChild(t); setTimeout(() => t.remove(), 4200) }
+
+
+    function enterApp() {
+      $('loginScreen').style.display = 'none'; const app = $('app'); app.classList.remove('hidden'); app.style.display = 'flex';
+      $('uName').textContent = me.name; $('uRole').textContent = role === 'admin' ? 'Administrator' : 'Applicant · ' + me.id;
+      $('avatar').textContent = me.name.split(' ').map(w => w[0]).join('').slice(0, 2).toUpperCase();
+      buildNav(); go(role === 'admin' ? 'a-dash' : 'home'); $('loginError').textContent = ''
+    }
+    $('loginForm').addEventListener('submit', async e => {
+      e.preventDefault();
+      const j = await api('login', { user_id: $('loginUser').value.trim(), password: $('loginPass').value });
+      if (!j.ok) { $('loginError').textContent = j.error; return }
+      me = j.user; role = me.role; await loadData(); enterApp()
+    });
+    /* manatiling naka-login kahit i-refresh ang page */
+    (async () => { const j = await api('me'); if (j.ok) { me = j.user; role = me.role; await loadData(); enterApp() } })();
+    async function logout() { await api('logout'); $('app').classList.add('hidden'); $('app').style.display = 'none'; $('loginScreen').style.display = 'flex'; $('loginForm').reset(); me = null; apps = []; renewals = []; enquiries = []; members = []; window.scrollTo(0, 0) }
+    const NAV = {
+      member: [['home', 'Home'], ['track', 'Track'], ['apply', 'New Application'], ['renew', 'Renewal'], ['mine', 'My Applications'], ['ref', 'Requirements & Fees'], ['help', 'Help']],
+      admin: [['a-dash', 'Overview'], ['a-apps', 'Applications'], ['a-ren', 'Renewals'], ['a-enq', 'Enquiries'], ['a-mem', 'Members']]
+    };
+    function buildNav() { $('nav').innerHTML = NAV[role].map(n => `<a data-p="${n[0]}" onclick="go('${n[0]}')">${n[1]}</a>`).join('') }
+    function go(p) {
+      document.querySelectorAll('.page').forEach(x => x.classList.add('hidden')); $(p).classList.remove('hidden');
+      document.querySelectorAll('#nav a').forEach(a => a.classList.toggle('active', a.dataset.p === p || (p === 'detail' && a.dataset.p === 'mine')));
+      render(p); window.scrollTo({ top: 0 })
+    }
+    function render(p) {
+      if (p === 'home') renderHome(); if (p === 'mine') renderMine(); if (p === 'renew') renderRen(); if (p === 'help') renderEnq(); if (p === 'ref') renderGuide();
+      if (p === 'profile') { $('pName').textContent = me.name; $('pId').textContent = me.id; $('pType').textContent = role === 'admin' ? 'Administrator' : 'Applicant' }
+      if (p.startsWith('a-')) renderAdmin(p)
+    }
+
+
+    function stepper(a) {
+      const done = a.stage >= 5; return `<div class="scroll"><ol class="stepper">${STAGES.map((s, i) => {
+        let c = a.rejected ? (i < a.stage ? 'done' : i === a.stage ? 'rej' : '') : (done || i < a.stage ? 'done' : i === a.stage ? 'cur' : '');
+        return `<li class="${c}">${s[0]}</li>`
+      }).join('')}</ol></div>`
+    }
+    function mask(n) { return n.split(' ').map(w => w[0] + '•'.repeat(Math.max(w.length - 1, 2))).join(' ') }
+    function trackHTML(a, pub) {
+      const s = status(a);
+      return `<div class="card accent" style="margin:0"><div class="row" style="justify-content:space-between"><div><h3>${esc(a.type)}</h3><span class="ref">${a.ref}</span></div>${badge(a)}</div>
+  ${stepper(a)}${a.rejected ? `<div class="alert bad"><b>Application rejected.</b> ${esc(a.reason)}</div>` : a.stage >= 5 ? `<div class="alert ok"><b>Your passport is ready.</b> Present your claim stub and ID at ${esc(a.site)}.</div>` : `<div class="alert info"><b>Current stage:</b> ${STAGES[a.stage][0]} — ${STAGES[a.stage][1]}</div>`}
+  <div class="kv"><div><small>Applicant</small><b>${pub ? mask(a.name) : esc(a.name)}</b></div><div><small>Submitted</small><b>${a.submitted}</b></div><div><small>Service</small><b>${a.speed} · $${a.fee}</b></div>
+  <div><small>Estimated release</small><b>${a.est}</b></div><div><small>Appointment</small><b>${a.appt}</b></div><div><small>Payment</small><b>${a.paid ? 'Paid' : 'Unpaid'}</b></div></div>
+  ${pub ? '' : `<div class="row mt"><button class="btn" onclick="openDetail('${a.ref}')">View full details</button></div>`}</div>`
+    }
+    async function publicTrack(e) {
+      e.preventDefault();
+      const j = await api('public_track', { ref: $('pubRef').value.trim(), name: $('pubName').value.trim() });
+      $('pubResult').innerHTML = j.ok ? trackHTML(j.app, true) : '<div class="alert bad">No application matches that Reference No. and last name. Check your receipt and try again.</div>'
+    }
+    function memberTrack(e, inPage) {
+      e.preventDefault(); const r = (inPage ? $('trackRef') : $('homeRef')).value.trim().toUpperCase();
+      const a = (role === 'admin' ? apps : mine()).find(x => x.ref === r);
+      if (!inPage) { go('track'); $('trackRef').value = r }
+      $('trackOut').innerHTML = a ? trackHTML(a) : '<div class="alert bad">Application not found on your account. Check the Reference No. (format PPT-2026-000125).</div>'
+    }
+    function openDetail(ref) {
+      const a = apps.find(x => x.ref === ref); go('detail');
+      $('detail').innerHTML = `<div class="crumb"><a onclick="go('mine')" style="cursor:pointer">← Back to my applications</a></div><h1 class="page-title">${esc(a.type)}</h1>
+  <p class="page-sub">Reference <span class="ref">${a.ref}</span> · Courier tracking <span class="ref">${a.track}</span></p>
+  <div class="card accent"><div class="row" style="justify-content:space-between"><h3>Progress</h3>${badge(a)}</div>${stepper(a)}
+  ${a.rejected ? `<div class="alert bad"><b>Reason for rejection:</b> ${esc(a.reason)}</div>` : ''}</div>
+  <div class="grid g2"><div>
+   <div class="card"><h3>Application details</h3><p class="sub mt" style="margin:0 0 12px"></p><div class="kv"><div><small>Applicant</small><b>${esc(a.name)}</b></div><div><small>Date of birth</small><b>${fmtDate(a.dob)}</b></div>
+   <div><small>Application type</small><b>${esc(a.type)}</b></div><div><small>Processing</small><b>${a.speed}</b></div><div><small>Submitted</small><b>${a.submitted}</b></div>
+   <div><small>Est. release</small><b>${a.est}</b></div><div><small>Office</small><b>${esc(a.site)}</b></div><div><small>Appointment</small><b>${a.appt}</b></div><div><small>Courier</small><b>${a.stage >= 5 ? 'Dispatched on request' : 'Not yet available'}</b></div></div></div>
+   <div class="card"><h3>Activity history</h3><p class="sub">Every update on this application.</p><ul class="log">${[...a.log].reverse().map(l => `<li><b>${esc(l[1])}</b><small>${l[0]}</small></li>`).join('')}</ul></div></div>
+  <div><div class="card"><h3>Payment</h3><ul class="docs"><li><span>Fee</span><b>$${a.fee}.00</b></li><li><span>Status</span><b>${a.paid ? '<span class="badge b-ok">Paid</span>' : '<span class="badge b-warn">Unpaid</span>'}</b></li><li><span>Receipt no.</span><b class="ref">${a.receipt || '—'}</b></li></ul></div>
+   <div class="card"><h3>Document checklist</h3><ul class="docs">${Object.entries(a.docs).map(([k, v]) => `<li><span>${k}</span>${v ? '<span class="badge b-ok">Received</span>' : '<span class="badge b-bad">Needs action</span>'}</li>`).join('')}</ul></div>
+   <div class="card"><h3>Need help?</h3><p class="sub">Quote <span class="ref">${a.ref}</span> in any enquiry.</p><button class="btn ghost full" onclick="go('help')">Contact the office</button></div></div></div>`
+    }
+
+
+    function renderHome() {
+      const m = mine(); $('hello').textContent = 'Welcome, ' + me.name.split(' ')[0];
+      $('sTotal').textContent = m.length; $('sProc').textContent = m.filter(a => !a.rejected && a.stage < 5).length; $('sReady').textContent = m.filter(a => !a.rejected && a.stage >= 5).length;
+      $('sRen').textContent = renewals.filter(r => r.owner === me.id).length;
+      $('latest').innerHTML = m[0] ? `<div class="kv" style="margin-bottom:12px"><div><small>Reference</small><b class="ref">${m[0].ref}</b></div><div><small>Type</small><b>${esc(m[0].type)}</b></div><div><small>Status</small><b>${badge(m[0])}</b></div></div>${stepper(m[0])}<button class="btn ghost sm" onclick="openDetail('${m[0].ref}')">View details</button>` : '<p class="hint">No applications yet. Start a new application to get your Reference No.</p>'
+    }
+    function renderMine() { $('mineList').innerHTML = mine().map(a => `<tr><td class="ref">${a.ref}</td><td>${esc(a.type)}</td><td>${a.speed}</td><td>${a.submitted}</td><td>${badge(a)}</td><td><button class="btn sm ghost" onclick="openDetail('${a.ref}')">View</button></td></tr>`).join('') || '<tr><td colspan="6" class="hint">No applications yet.</td></tr>' }
+    function renderRen() { $('renList').innerHTML = renewals.filter(r => r.owner === me.id).map(r => `<tr><td class="ref">${r.ref}</td><td>${esc(r.passport)}</td><td>${esc(r.reason)}</td><td>${r.speed}</td><td><span class="badge ${r.status === 'Approved' ? 'b-ok' : r.status === 'Rejected' ? 'b-bad' : 'b-warn'}">${r.status}</span></td></tr>`).join('') || '<tr><td colspan="5" class="hint">No renewal requests.</td></tr>' }
+    function renderEnq() { $('enqList').innerHTML = enquiries.filter(c => c.owner === me.id).map(c => `<div class="msg"><b>${esc(c.subject)}</b><small>${c.ref} · ${c.category}</small>${esc(c.message)}${c.reply ? `<div class="reply"><b>Office reply:</b> ${esc(c.reply)}</div>` : '<div class="hint">Awaiting reply…</div>'}</div>`).join('') }
+    function renderGuide() { $('stageGuide').innerHTML = STAGES.map((s, i) => `<tr><td><b>${i + 1}. ${s[0]}</b></td><td>${s[1]}</td><td>${s[2]}</td></tr>`).join('') }
+    function feeHint() { $('feeHint').textContent = 'Estimated fee: $' + FEES[$('fSpeed').value] }
+    async function submitApply(e) {
+      e.preventDefault(); const f = e.target;
+      const j = await api('apply', {
+        first: $('fFirst').value, last: $('fLast').value, dob: $('fDob').value, sex: $('fSex').value, pob: $('fPob').value, civil: $('fCivil').value,
+        email: $('fEmail').value, mobile: $('fMobile').value, address: $('fAddress').value, type: $('fType').value, speed: $('fSpeed').value,
+        office: $('fSite').value, appt: $('fAppt').value
+      });
+      if (!j.ok) return toast(j.error);
+      const a = j.app; await loadData(); f.reset(); feeHint();
+      $('cRef').textContent = a.ref; $('cList').innerHTML = `<li><span>Applicant</span><b>${esc(a.name)}</b></li><li><span>Service</span><b>${a.speed} · $${a.fee}</b></li><li><span>Appointment</span><b>${a.appt}</b></li><li><span>Office</span><b>${esc(a.site)}</b></li><li><span>Est. release</span><b>${a.est}</b></li>`;
+      $('cOpen').onclick = () => { closeModal('confirmModal'); openDetail(a.ref) }; openModal('confirmModal'); updateAdminCounts()
+    }
+    async function submitRenew(e) {
+      e.preventDefault(); const f = e.target;
+      const j = await api('renew', { passport: $('rNo').value, expiry: $('rExp').value, reason: $('rWhy').value, speed: $('rSpeed').value, notes: $('rNotes').value });
+      if (!j.ok) return toast(j.error);
+      await loadData(); f.reset(); renderRen(); toast('Renewal request submitted. You will be notified of the decision.')
+    }
+    async function submitEnq(e) {
+      e.preventDefault(); const f = e.target;
+      const j = await api('enquiry', { subject: $('eSub').value, category: $('eCat').value, message: $('eMsg').value });
+      if (!j.ok) return toast(j.error);
+      await loadData(); f.reset(); renderEnq(); toast('Enquiry sent to the passport office.')
+    }
+
+
+    function updateAdminCounts() { }
+    function logAll() { return apps.flatMap(a => a.log.map(l => ({ d: l[0], t: l[1], r: a.ref }))).sort((x, y) => new Date(y.d) - new Date(x.d)).slice(0, 6) }
+    function renderAdmin(p) {
+      if (p === 'a-dash') {
+        $('aMem').textContent = members.length; $('aProc').textContent = apps.filter(a => !a.rejected && a.stage < 5).length; $('aReady').textContent = apps.filter(a => !a.rejected && a.stage >= 5).length;
+        $('aEnq').textContent = enquiries.filter(c => !c.reply).length; $('aLog').innerHTML = logAll().map(l => `<li><b>${esc(l.t)}</b><small>${l.d} · <span class="ref">${l.r}</span></small></li>`).join('')
+      }
+      if (p === 'a-apps') $('aAppList').innerHTML = apps.map(a => `<tr><td class="ref">${a.ref}</td><td>${esc(a.name)}</td><td>${esc(a.type)}</td><td>${a.rejected ? '—' : STAGES[a.stage][0]}</td><td>${badge(a)}</td>
+    <td>${a.rejected || a.stage >= 5 ? '<span class="hint">Closed</span>' : `<div class="row"><button class="btn sm ok" onclick="advance('${a.ref}')">Advance</button><button class="btn sm bad" onclick="rejectApp('${a.ref}')">Reject</button></div>`}</td></tr>`).join('');
+      if (p === 'a-ren') $('aRenList').innerHTML = renewals.map((r, i) => `<tr><td class="ref">${r.ref}</td><td>${esc(r.name)}</td><td>${esc(r.passport)}</td><td>${esc(r.reason)}</td>
+    <td><span class="badge ${r.status === 'Approved' ? 'b-ok' : r.status === 'Rejected' ? 'b-bad' : 'b-warn'}">${r.status}</span></td>
+    <td>${r.status === 'Pending' ? `<div class="row"><button class="btn sm ok" onclick="decideRen(${i},'Approved')">Approve</button><button class="btn sm bad" onclick="decideRen(${i},'Rejected')">Reject</button></div>` : '—'}</td></tr>`).join('');
+      if (p === 'a-enq') $('aEnqList').innerHTML = enquiries.map((c, i) => `<div class="msg" style="margin:0 0 12px"><b>${esc(c.subject)}</b><small>${c.ref} · ${c.category} · from ${esc(c.name)}</small>${esc(c.message)}
+    ${c.reply ? `<div class="reply"><b>Reply sent:</b> ${esc(c.reply)}</div>` : `<div class="row mt"><input id="rp${i}" placeholder="Write a reply…" style="flex:1;min-width:200px"><button class="btn sm" onclick="reply(${i})">Send reply</button></div>`}</div>`).join('');
+      if (p === 'a-mem') $('aMemList').innerHTML = members.map(m => `<tr><td class="ref">${m.id}</td><td>${esc(m.name)}</td><td>${esc(m.email)}</td><td><span class="badge b-ok">Active</span></td></tr>`).join('')
+    }
+    async function adminDo(action, data, page, msg) {
+      const j = await api(action, data); if (!j.ok) return toast(j.error);
+      await loadData(); renderAdmin(page); toast(msg)
+    }
+    function advance(ref) { adminDo('advance', { ref }, 'a-apps', ref + ' advanced to the next stage') }
+    function rejectApp(ref) { adminDo('reject', { ref }, 'a-apps', ref + ' rejected') }
+    function decideRen(i, s) { const r = renewals[i]; adminDo('decide_renewal', { ref: r.ref, status: s }, 'a-ren', 'Renewal ' + r.ref + ' ' + s.toLowerCase()) }
+    function reply(i) { const v = $('rp' + i).value.trim(); if (!v) return; adminDo('reply', { ref: enquiries[i].ref, text: v }, 'a-enq', 'Reply sent') }
+
+
+    async function register(e) {
+      e.preventDefault(); const f = e.target;
+      const j = await api('register', { name: $('regName').value, email: $('regEmail').value, password: $('regPass').value });
+      if (!j.ok) return toast(j.error);
+      closeModal('registerModal'); f.reset(); $('loginUser').value = j.id; toast('Account created. Your Member ID is ' + j.id + ' — sign in with the password you chose.')
+    }
+    function forgot(e) { e.preventDefault(); closeModal('forgotModal'); e.target.reset(); toast('If the details match an account, a reset link has been sent.') }
+    function toggleTheme(dark) { document.documentElement.setAttribute('data-theme', dark ? 'dark' : 'light') }
+  </script>
+</body>
+
+</html>
